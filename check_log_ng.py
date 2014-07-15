@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # coding: utf-8
 # Python 2.4 - 2.7
+
 import sys
 import os
 import glob
@@ -10,7 +11,7 @@ import base64
 from optparse import OptionParser
 
 ## Globals
-CHECK_LOG_NG_VERSION = '1.0.4'
+CHECK_LOG_NG_VERSION = '1.0.7'
 debug = False
 
 def _debug(string):
