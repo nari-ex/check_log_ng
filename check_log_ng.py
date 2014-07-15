@@ -537,12 +537,6 @@ class LogChecker:
                           dest="logfile_pattern",
                           metavar="<filename>",
                           help="The pattern of log files to be scanned. The metacharacter * and ? are allowed. If you want to set multiple patterns, set a space between patterns.")
-        parser.add_option("-F", "--format",
-                          action="store",
-                          dest="logformat",
-                          metavar="<format>",
-                          default=LogChecker.FORMAT_SYSLOG,
-                          help="The regular expression of format of log to parse. Required two group, format of '^(TIMESTAMP and TAG)(.*)$'. Also, may use %%, %Y, %y, %a, %b, %m, %d, %e, %H, %M, %S, %F and %T of strftime(3). Default: the regular expression for syslog.")
         parser.add_option("-s", "--seekfile",
                           action="store",
                           dest="seekfile",
@@ -553,11 +547,12 @@ class LogChecker:
                           dest="seekfile_directory",
                           metavar="<seekfile_directory>",
                           help="The directory of the temporary file to store the seek position of the last scan. If check multiple log files, require this option.")
-        parser.add_option("-I", "--trace-inode",
-                          action="store_true",
-                          dest="trace_inode",
-                          default=False,
-                          help="Trace the inode of log files. If set, use inode information as a seek file.")
+        parser.add_option("-F", "--format",
+                          action="store",
+                          dest="logformat",
+                          metavar="<format>",
+                          default=LogChecker.FORMAT_SYSLOG,
+                          help="The regular expression of format of log to parse. Required two group, format of '^(TIMESTAMP and TAG)(.*)$'. Also, may use %%, %Y, %y, %a, %b, %m, %d, %e, %H, %M, %S, %F and %T of strftime(3). Default: the regular expression for syslog.")
         parser.add_option("-p", "--pattern",
                           action="store",
                           dest="pattern",
@@ -646,6 +641,11 @@ class LogChecker:
                           dest="remove_seekfile",
                           default=False,
                           help="Remove expired seek files. See also --expiration.")
+        parser.add_option("-I", "--trace-inode",
+                          action="store_true",
+                          dest="trace_inode",
+                          default=False,
+                          help="Trace the inode of log files. If set, use inode information as a seek file.")
         parser.add_option("-M", "--multiline",
                           action="store_true",
                           dest="multiline",
