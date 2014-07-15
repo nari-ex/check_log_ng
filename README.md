@@ -8,6 +8,21 @@ Log file regular expression based parser plugin for Nagios.
 
 ログファイルをチェックして正規表現で記述された文字列のパターンを検出するNagiosプラグイン。
 
+
+
+## 修正履歴
+
+* 2014-06-18 1.0.7 fix bugs.
+* 2014-03-31 1.0.6 add --critical-negpattern options.
+* 2014-03-11 1.0.5 add ---multiline options.
+* 2014-03-05 1.0.4 add --trace-inode options.
+* 2013-12-27 1.0.3 change an OK message.
+* 2013-12-20 1.0.2 revise version processing and fix a help message.
+* 2013-12-20 1.0.1 fix check argc and parse logformat variable.
+* 2013-12-05 1.0.0 initial release.
+
+
+
 ## 特徴
 
 * 検知文字列のパターンを正規表現で指定できます。
@@ -16,6 +31,42 @@ Log file regular expression based parser plugin for Nagios.
 * ログファイル毎にどこまでチェックしたかを記録するseekファイルを利用しているため、前回チェックからの差分だけをチェックできます。
 * 複数行に渡って同時に出力されたログメッセージを結合してからチェックすることができます。これにより、検知除外文字列の効果が発揮できるでしょう。
 * [check_log3.pl](http://exchange.nagios.org/directory/Plugins/Log-Files/check_log3-2Epl/details)の後方互換性を持っています。現在指定しているオプションをそのまま使えます。
+
+## インストール
+
+ここでは、Nagios プラグインとして check_log_ng をインストールする手順を説明します。
+まず、check_log_ng.py を Nagios のプラグインディレクトリにコピーし、実行権限を付与します。
+```
+# cp check_log_ng.py /usr/lib64/nagios/plugins/
+# chmod 755 check_log_ng.py
+```
+
+予め seek ファイル用のディレクトリを作成し、 NRPE の実行権限で書き込みできるようにします。
+```
+# mkdir /var/spool/check_log_ng
+# chown nrpe:nrpe /var/spool/check_log_ng
+```
+
+check_log_ng.py を実行するときには実行権限に注意してください。
+seek ファイルの所有者が実行した権限のものになるため、NRPE 経由で実行するときに seek ファイルを更新できなくなる恐れがあります。
+ログの参照に root 権限が必要な場合には、sudo経由で check_log_ng.py を実行するようにNRPEの設定を行ってください。
+また、/etc/sudoers に次のような記述を追加してください。
+```
+Defaults:nrpe !requiretty
+nagios ALL=(root) NOPASSWD: /usr/lib64/nagios/plugins/check_log_ng.py
+```
+
+以上でインストール完了です。
+
+
+
+## 移行
+
+check_log_ng.py は [check_log3.pl](http://exchange.nagios.org/directory/Plugins/Log-Files/check_log3-2Epl/details) と互換性があります。
+[check_log3.pl](http://exchange.nagios.org/directory/Plugins/Log-Files/check_log3-2Epl/details)を check_log_ng.py から移行する場合は、コマンド名を check_log_ng.py に書き換えます。それ以外の変更する必要はありません。
+但し、[check_log3.pl](http://exchange.nagios.org/directory/Plugins/Log-Files/check_log3-2Epl/details) の``-d``, ``-D``, ``-e``, ``-E``, ``-a``オプションには対応していません。
+
+
 
 ## 実行例
 
@@ -30,32 +81,34 @@ Log file regular expression based parser plugin for Nagios.
 
 **ログローテーションしたファイル(messages.Nの形式)を含めてチェックする場合:**
 ```
-# check_log_ng.py -l '/var/log/messages*' -S /var/spool/check_log_ng -p 'ERROR'
+# check_log_ng.py -l '/var/log/messages*' -S /var/spool/check_log_ng -p 'ERROR' -I -R
 ```
+
 **ログローテーションしたファイル(messages-YYYYMMDDの形式)を含めてチェックする場合:**
 ```
-# check_log_ng.py -l '/var/log/messages*' -S /var/spool/check_log_ng -p 'ERROR' -R
+# check_log_ng.py -l '/var/log/messages*' -S /var/spool/check_log_ng -p 'ERROR' -I -R
 ```
 
-**syslog出力以外のログの場合:**
-
+**``2013/12/05 09:36:51,024 jobs-thread-5 ERROR ~ ``のような複数行のログをチェックする場合**
 ```
-# check_log_ng.py -l '/var/log/application.log' -S /var/spool/check_log_ng -F '^(%Y/%m/%d\s%T,\d+ \S+ \S+) (.*)$' -p 'ERROR'
+# check_log_ng.py -l '/var/log/application.log' -S /var/spool/check_log_ng -F '^(%Y/%m/%d\s%T,\d+ \S+ \S+) (.*)$' -p 'ERROR' -I -R -M
 ```
-※syslog出力以外の場合には-Fオプションによりログフォーマットのパターンの指定が必要。
-※上記例は"2013/12/05 09:36:51,024 jobs-thread-5 ERROR ~ "のようなログの場合。
 
 
-## ログファイルについて
+## オプションの解説
 
-次のように``-l``オプションでログファイルを指定します。
+
+### ログファイルの指定（-l, --logfile）
+
+``-l``オプションでログファイルを指定します。
 ログファイルのファイル名のパターンは絶対パスで指定してください。
 また、ファイルの絶対パス名には **空白文字を含めることができません** 。
 ```
 -l '/var/log/messages'
 ```
 
-### 複数ログファイル指定
+
+#### 複数ログファイルの指定
 
 ファイル名のパターンとしてメタキャラクタの``*``と``?``に対応しています。次の例のように記述できます。メタキャラクタを指定するときには引用符で囲ってください。
 ```
@@ -71,25 +124,28 @@ Log file regular expression based parser plugin for Nagios.
 パターンに一致するファイルがたくさんある場合でも、ログファイルのタイムスタンプのチェックも行っているため、``-t``オプションで指定した時間以降に更新の無いログファイルのチェックを行わずに済みます。``-t``オプションの値はデフォルトは86400秒（1日）です。
 
 
-## seek ファイルについて
+### seek ファイルの指定（-s, --seekfile, -S, --seekfile-directory）
 
 ログファイルが 1 つだけの場合は次のように``-s``オプションで seek ファイルを指定することができます。
 ```
 -s '/var/spool/check_log_ng/messages.seek'
 ```
 
-ログファイルが 1 つあるいは複数の場合は``-S``オプションで seek ファイルを格納するディレクトリを指定します。seek ファイルのファイル名はログファイルのファイル名から自動生成されます。seek ファイル用のディレクトリを変えることで複数の監視サーバからのチェックをそれぞれ独立させることができます。
+ログファイルが 1 つあるいは複数の場合は``-S``オプションで seek ファイルを格納するディレクトリを指定します。
+seek ファイルのファイル名はログファイルのファイル名から自動生成されます。
+seek ファイル用のディレクトリを変えることで複数の監視サーバからのチェックをそれぞれ独立させることができます。
 
-自動生成される seek ファイルのファイル名は、ログファイルの絶対パスのファイル名から英数字と``-``以外の文字を``_``に置換したものに拡張子``.seek``を付けたものになります。例えば、ログファイルのファイル名が``/var/log/messages``の場合はseekファイルのファイル名は``_var_log_messages.seek``になります。
-
-古い seek ファイルをパージする``-R``オプションを用意しています。ログファイルのファイル名にタイムスタンプが付く場合には、ローテーションによってログが削除されても seek ファイルは残ってしまいます。このときは、``-R``オプションを指定して、古いログファイルを削除するようにした方がよいでしょう。
-
-``-R``オプションを指定したときにはデフォルトでは691200秒(8日)より前のファイルがパージされます。この時間を変えるときには``-E``オプションで指定できます。``-E``オプションにはログローテーションの期間より大きい値を指定してください。
+自動生成される seek ファイルのファイル名は、ログファイルの絶対パスのファイル名から英数字と``-``以外の文字を``_``に置換したものに拡張子``.seek``を付けたものになります。
+例えば、ログファイルのファイル名が``/var/log/messages``の場合はseekファイルのファイル名は``_var_log_messages.seek``になります。
 
 
-## ログフォーマットの指定
+### ログフォーマットの指定（-F, --format）と複数行対応（-M, --multiline）
 
-syslog 以外のログファイルの場合には、同時に出力された複数行のエラーに対応するために、``--format``オプションによりログの形式を正規表現で指定してください。指定しなければ syslog の形式と判断します。
+syslog 以外の複数行出力のあるログファイルの場合については、
+``-F``オプションと``-M``オプションを指定してください。
+これにより、同時に出力された複数行のエラーに対応することができます。
+なお、``-F``オプションの指定が無い場合は syslog の形式と判断します。
+``-M``オプションがない場合は、1行ごとに処理を行います。
 
 同時に出力されたメッセージを判断するために、タイムスタンプやタグ等の情報を利用しています。
 例えば、次のようなログ出力があるときには``2013/12/05 09:36:51,024 jobs-thread-5 ERROR``が同じであるため、同時出力されたメッセージと見なすようにします。
@@ -101,8 +157,10 @@ syslog 以外のログファイルの場合には、同時に出力された複�
 ```
 2013/12/05 09:36:51,024 jobs-thread-5 ERROR ~ *** Called URI is: https://www.example.com/submit ~ *** Response code is: 500
 ```
-そのため、複数行のログメッセージを同時出力と見なすためのキーとなる情報（タイムスタンプ、ホスト名、タグ、プロセスID、スレッドID、ログレベル等）を正規表現の"(式)"の形式でグルーピングしてください。 **正規表現の後方参照の 1 つ目をキーとします** 。
-さらに、残りのメッセージのパートを``(.*)``でまとめてグルーピングしてください。 **正規表現の後方参照の2つ目をメッセージと見なします** 。
+そのため、複数行のログメッセージを同時出力と見なすためのキーとなる情報（タイムスタンプ、ホスト名、タグ、プロセスID、スレッドID、ログレベル等）を正規表現の"(式)"の形式でグルーピングしてください。
+**正規表現の後方参照の 1 つ目をキーとします** 。
+さらに、残りのメッセージのパートを``(.*)``でまとめてグルーピングしてください。
+**正規表現の後方参照の2つ目をメッセージと見なします** 。
 他の箇所で括弧``(〜)``を使うときには``(?:〜)``の形式を使って後方参照しないようにしてください。
 また、正規表現の他に``strftime(3)``の次のパターンが利用できます。
 ```
@@ -122,9 +180,9 @@ syslog 以外のログファイルの場合には、同時に出力された複�
 ```
 実行時に内部的に正規表現に展開されます。
 
-### フォーマットの指定例
+#### フォーマットの指定例
 
-**apacheのエラーログの例:**
+**Apacheのエラーログの例:**
 ```
 [Thu Dec 05 15:03:20 2013] [error] [client ::1] Directory index forbidden by Options directive: /var/www/html/
 ```
@@ -147,110 +205,111 @@ syslog 以外のログファイルの場合には、同時に出力された複�
 ※ NRPEの設定ファイル上で``$``を用いるとエラーが発生しますので注意しましょう。
 なお、ログフォーマットのパターンに一致しない行は前の行に対する継続行と見なされ、前の行に結合されます。
 
-## パターンの指定
 
-検知する文字列のパターンを``-p``オプションに正規表現で指定します。
-検知文字列が複数あるときには行毎にパターンを書いたファイルを用意して``-P``オプションでファイル名を指定します。
-CRITICAL と判定させたい文字列があるときには、同様に``--critical-pattern``や``--critical-patternfile``で指定します。
+### 監視パターンの指定（-p, --pattern, -P, --patternfile）
+
+監視文字列のパターンは``-p``オプションを用いて指定します。
+監視文字列が複数あるときには行毎にパターンを書いたファイルを用意して``-P``オプションの引数としてファイル名を指定します。
+パターンは正規表現を用いて指定することができます。
+``p``または``-P``で監視パターンを指定した場合は、アラート発報時のステータスはWARNINGとなります。
+
+#### 重篤な監視パターンの指定（--critical-pattern, --critical-patternfile）
+
+WARNING ではなく CRITICAL と判定させたい場合は、``-p``, ``-P``オプションの代わりに``--critical-pattern``, ``--critical-patternfile``オプションを用いて監視パターンを指定します。
+
+
+### 除外パターンの指定（-n, --negpattern, -N, -f, --negpatternfile）
 
 検知を除外する文字列のパターン（ネガティブパターン）があるときには、``-n``オプションに正規表現で指定します。
-除外文字列が複数あるときには行毎にパターンを書いたファイルを用意して``-N``オプションでファイル名を指定します。
+除外文字列が複数あるときには行毎にパターンを書いたファイルを用意して``-N``または``-f``オプションでファイル名を指定します。
+※ ``-f``オプションは、check_log3.pl の互換のために実装してあります。
 
-大文字小文字を区別したくないときには``-i``オプションを指定してください。
+``-n``または``-N``によって除外パターンを指定した場合、
+``-p``または``-P``で指定した監視パターンにマッチするメッセージが出力されている場合でも、
+同時に除外パターンにマッチするメッセージが出力されている場合には、アラートは発報しません。
+なお、重篤な監視パターンについては無視をせず、通常通りアラート発報します。
 
-``-w``オプションと``-c``オプションには WARNING や CRITICAL になる検知回数を指定します。
-デフォルトでは``-w``が 1 で``-c``が 0 であるため、検知文字列が見つかれば WARNING となります。
-なお、``--critical-pattern``や``--critical-patternfile``で指定した文字列が検知された場合は、``-w``や``-c``の設定に関わらず CRITICAL になります。
 
-ここで、複数行対応について簡単に説明します。
+#### 指定例
+
+除外パターンを指定するケースについて説明します。
 例えば、次のようなログ出力があるとします。
-```
-2013/12/05 09:36:51,024 jobs-thread-5 ERROR ~ *** Called URI is: https://www.example.com/submit
-2013/12/05 09:36:51,024 jobs-thread-5 ERROR ~ *** Response code is: 500
-```
-ログフォーマットで指定したキーとなる文字列が同じであるため、メッセージの内容を結合して、次のような1行のメッセージと見なされます。
-```
-2013/12/05 09:36:51,024 jobs-thread-5 ERROR ~ *** Called URI is: https://www.example.com/submit ~ *** Response code is: 500
-```
-このメッセージに対してパターンのチェックを実施します。
-"ERROR"があり、URIが"/submit"でレスポンスコードが"500"であるパターンとして``"ERROR .*URI.*/submit.*Response code is: 500"``のように記述することができます。
-
-ネガティブパターンを指定するケースについても説明します。
-例えば、次のようなログ出力があるとします。
-```
-2013/12/05 09:36:51,024 jobs-thread-5 ERROR ~ *** Called URI is: https://www.example.com/submit
-2013/12/05 09:36:51,024 jobs-thread-5 ERROR ~ *** Response code is: 400
-2013/12/05 09:36:51,024 jobs-thread-5 ERROR ~ *** Reason: expired
-```
-このメッセージは結合されて、次のような1行のメッセージと見なされます。
 ```
 2013/12/05 09:36:51,024 jobs-thread-5 ERROR ~ *** Called URI is: https://www.example.com/submit ~ *** Response code is: 400 ~ *** Reason: expired
 ```
-ここで、エラーの理由が"expired"の場合には検知を除外したいとします。パターンに"ERROR"を指定して、ネガティブパターンとして"Reason: expired"を指定すればよいでしょう。
+ここで、エラーの理由が"expired"の場合には検知を除外したいとします。
+この場合は監視パターンに"ERROR"を指定して、除外パターンとして"Reason: expired"を指定すればよいでしょう。
 
-## インストール
+#### より強力な除外パターンの指定（--critical-negpattern, --critical-negpatternfile）
 
-ここでは、Nagios プラグインとして check_log_ng をインストールする手順を説明します。
-まず、check_log_ng.py を Nagios のプラグインディレクトリにコピーし、実行権限を付与します。
+``-n``または``-N``では、``--critical-pattern``または``--critical-patternfile``で指定された監視パターンが存在する場合には、無視をせずアラートを発報します。
+``--critical-negpattern``または``--critical-negpatternfile``によって除外パターンを指定した場合、
+監視パターンにマッチするメッセージが出力されている場合でも、
+同時に除外パターンにマッチするメッセージが出力されている場合には、それらを無視してアラートは発報しません。
+重篤な監視パターンについても無視します。
+
+
+### 大文字小文字を区別しない（-i, --case-insensitive）
+
+``-i``オプションを指定することで、大文字小文字を区別せずにパターンマッチを指定行います。
+このオプションの指定は、監視パターンマッチと除外パターンマッチの両方に適用されます。
+
+
+### 検知回数の指定（-w, --warning, -c, --critical）
+
+``-w``オプションと``-c``オプションは、 WARNING や CRITICAL になる検知回数を指定します。
+デフォルトでは``-w``が 1 で``-c``が 0 であるため、検知文字列が見つかれば WARNING となります。
+なお、``--critical-pattern``や``--critical-patternfile``で指定した文字列が検知された場合は、``-w``や``-c``の設定に関わらず CRITICAL になります。
+
+
+### スキャン期間の指定（-t, --scantime）
+
+以下のように複数のログファイルを指定する場合、マッチするすべてのログファイルを毎回検索する必要はありません。更新のないログファイルは検索する必要がないからです。
 ```
-# cp check_log_ng.py /usr/lib64/nagios/plugins/
-# chmod 755 check_log_ng.py
-```
-
-予め seek ファイル用のディレクトリを作成し、 NRPE の実行権限で書き込みできるようにします。
-```
-# mkdir /var/spool/check_log_ng
-# chown nrpe:nrpe /var/spool/check_log_ng
-```
-
-以上でインストール完了です。
-なお、動作確認として check_log_ng.py を実行するときには実行権限に注意してください。
-seek ファイルの所有者が実行した権限のものになるため、NRPE 経由で実行するときに seek ファイルを更新できなくなる恐れがあります。
-
-## 移行
-
-check_log_ng.py は [check_log3.pl](http://exchange.nagios.org/directory/Plugins/Log-Files/check_log3-2Epl/details) と互換性があります。
-[check_log3.pl](http://exchange.nagios.org/directory/Plugins/Log-Files/check_log3-2Epl/details)を check_log_ng.py に置き換える場合はそのままコマンド名を check_log_ng.py に書き換えればよいです。
-但し、[check_log3.pl](http://exchange.nagios.org/directory/Plugins/Log-Files/check_log3-2Epl/details) の``-d``, ``-D``, ``-e``, ``-E``, ``-a``オプションには対応していません。
-
-##実行例
-
-**一つのログファイルをチェックする場合:**
-```
-# check_log_ng.py -l '/var/log/messages' -s /var/spool/check_log_ng/messages -p 'ERROR'
-```
-あるいは
-```
-# check_log_ng.py -l '/var/log/messages' -S /var/spool/check_log_ng -p 'ERROR'
+-l '/var/log/messages*'
 ```
 
-**ログローテーションしたファイル(messages.Nの形式)を含めてチェックする場合:**
-```
-# check_log_ng.py -l '/var/log/messages*' -S /var/spool/check_log_ng -p 'ERROR'
-```
-
-**ログローテーションしたファイル(messages-YYYYMMDDの形式)を含めてチェックする場合:**
-```
-# check_log_ng.py -l '/var/log/messages*' -S /var/spool/check_log_ng -p 'ERROR' -R -t 604800
-```
-古い seek ファイルが残ってしまうため、古い seek ファイルを削除するために``-R``オプションを指定し、さらに、``-t``オプションにログローテーションの期間を秒数で指定する。
-
-**ログファイルの形式を指定する場合:**
-``2013/12/05 09:36:51,024 jobs-thread-5 ERROR ~ ``のようなログの場合:
-```
-# check_log_ng.py -l '/var/log/application.log' -S /var/spool/check_log_ng -F '^(%Y/%m/%d\s%T,\d+ \S+ \S+) (.*)$' -p 'ERROR'
-```
-
-なお、ログの参照に root 権限が必要な場合には /etc/sudoers に次のような記述を追加してください。NRPE の実行権限は適宜置き換えてください。
-```
-Defaults:nrpe !requiretty
-nrpe ALL=(root) NOPASSWD: /usr/lib64/nagios/plugins/check_log_ng.py
-```
-それから、sudo経由で check_log_ng.py を実行するようにNRPEの設定を行ってください。
-
-## 使い方
+``-t``オプションを用いることで、しばらく更新されていないログは検索対象外となります。
+具体的には、ログファイルの mtime が次の条件を満たす場合に対象外となります。オプション引数は秒単位で指定します。デフォルト値は 86400 秒（1日）です。
 
 ```
+[ログファイルの mtime] < [現在時刻] - [-t に渡された値]
+```
+
+
+### seek ファイルの保存期間の指定（-E, --expiration）
+
+seek ファイルの保存期間を秒単位で指定します。デフォルトは 691200 秒（8日）です。
+この値は、**ログローテーション期間より大きい値を指定してください**。
+なお、後述する``-R``オプションを指定していない場合、seek ファイルは削除されません。
+
+
+### 期限切れの seek ファイルの削除（-R, --remove-seekfile）
+
+``-R``を指定することで、期限切れの seek ファイルを削除します。
+期限の指定は、``-E``オプションで指定します。
+seek ファイルの mtime が次の条件を満たす場合に seek ファイルを削除します。
+```
+[seek ファイルの mtime] < [現在時刻] - [--expiration オプションの値]
+```
+
+
+### inode ベースの seek ファイル作成（-I, --trace-inode）
+
+``-I``オプションを指定することで、seekファイルのファイル名に inode の情報を埋め込みます。
+これにより、seek ファイルは inode ベースで管理されます。
+inode ベースで seek ファイルを管理すると、
+ログローテート後に、他のログファイルで用いていた seek ファイルが使いまわされるという問題を回避することができます。
+そのため、複数ファイル指定する場合はこのオプションの指定を強く推奨します。
+
+
+## その他
+
+デバッグオプションとして``--debug``があります。
+また、``-h``または``--help``を指定することで以下のようにオプション一覧が出力されます。
+
+```
+$ ./check_log_ng.py -h
 Usage: check_log_ng.py [option ...]
 
 Options:
@@ -325,38 +384,7 @@ Options:
   --debug               Enable debug.
 ```
 
-## 修正履歴
 
-* 2013-12-05 1.0.0 initial release.
-* 2013-12-20 1.0.1 fix check argc and parse logformat variable.
-* 2013-12-20 1.0.2 revise version processing and fix a help message.
-* 2013-12-27 1.0.3 change an OK message.
-* 2014-03-05 1.0.4 add --trace-inode options.
-* 2014-03-11 1.0.5 add ---multiline options.
-* 2014-03-31 1.0.6 add --critical-negpattern options.
-* 2014-06-18 1.0.7 fix bugs.
+## ライセンス
 
-## 仕様
-
-T.B.D.
-
-**ログファイルのチェックをスキップする条件:**
-
-* ログファイルの mtime が次の条件を満たす場合。
-```
-    [ログファイルの mtime] < [現在時刻] - [--scantime オプションの値]
-```
-* ログファイルのファイルサイズと seek ファイルに記録されたオフセット値が等しい。
-```
-    [ログファイルのサイズ] == [seek ファイルのオフセット値]
-```
-
-**seek ファイルを削除する条件:**
-
-* seek ファイルの mtime が次の条件を満たす場合に seek ファイルを削除する。
-```
-    [seek ファイルの mtime] < [現在時刻] - [--expiration オプションの値]
-```
-
-
-EOT
+ライセンスは 2 条項 BSD ライセンスに準拠します。
