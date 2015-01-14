@@ -5,8 +5,8 @@ from check_log_ng import LogChecker
 import unittest
 import os
 import time
-import sys
-#import pikzie
+# import sys
+# import pikzie
 
 
 class TestSequenceFunctions(unittest.TestCase):
@@ -69,26 +69,25 @@ class TestSequenceFunctions(unittest.TestCase):
         if os.path.exists(self.testdir):
             os.removedirs(self.testdir)
 
-
     def test_format(self):
         """--format option
         """
         initial_data = {
-                "logformat": "^(\[%a %b %d %T %Y\] \[\S+\]) (.*)$",
-                "pattern_list": ["ERROR"],
-                "critical_pattern_list": [],
-                "negpattern_list": [],
-                "critical_negpattern_list": [],
-                "case_insensitive": False,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": False,
-                "multiline": False,
-                "scantime": 86400,
-                "expiration": 691200
-                }
+            "logformat": "^(\[%a %b %d %T %Y\] \[\S+\]) (.*)$",
+            "pattern_list": ["ERROR"],
+            "critical_pattern_list": [],
+            "negpattern_list": [],
+            "critical_negpattern_list": [],
+            "case_insensitive": False,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": False,
+            "multiline": False,
+            "scantime": 86400,
+            "expiration": 691200
+        }
         log = LogChecker(initial_data)
 
         f = open(self.logfile, 'a')
@@ -107,21 +106,21 @@ class TestSequenceFunctions(unittest.TestCase):
         """--pattern option
         """
         initial_data = {
-                "logformat": self.logformat_syslog,
-                "pattern_list": ["ERROR"],
-                "critical_pattern_list": [],
-                "negpattern_list": [],
-                "critical_negpattern_list": [],
-                "case_insensitive": False,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": False,
-                "multiline": False,
-                "scantime": 86400,
-                "expiration": 691200
-                }
+            "logformat": self.logformat_syslog,
+            "pattern_list": ["ERROR"],
+            "critical_pattern_list": [],
+            "negpattern_list": [],
+            "critical_negpattern_list": [],
+            "case_insensitive": False,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": False,
+            "multiline": False,
+            "scantime": 86400,
+            "expiration": 691200
+        }
         log = LogChecker(initial_data)
 
         f = open(self.logfile, 'a')
@@ -140,21 +139,21 @@ class TestSequenceFunctions(unittest.TestCase):
         """--pattern option
         """
         initial_data = {
-                "logformat": self.logformat_syslog,
-                "pattern_list": ["ERROR"],
-                "critical_pattern_list": [],
-                "negpattern_list": [],
-                "critical_negpattern_list": [],
-                "case_insensitive": False,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": False,
-                "multiline": False,
-                "scantime": 86400,
-                "expiration": 691200
-                }
+            "logformat": self.logformat_syslog,
+            "pattern_list": ["ERROR"],
+            "critical_pattern_list": [],
+            "negpattern_list": [],
+            "critical_negpattern_list": [],
+            "case_insensitive": False,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": False,
+            "multiline": False,
+            "scantime": 86400,
+            "expiration": 691200
+        }
         log = LogChecker(initial_data)
 
         f = open(self.logfile, 'a')
@@ -172,21 +171,21 @@ class TestSequenceFunctions(unittest.TestCase):
         """--pattern and --case-insensitive options
         """
         initial_data = {
-                "logformat": self.logformat_syslog,
-                "pattern_list": ["error"],
-                "critical_pattern_list": [],
-                "negpattern_list": [],
-                "critical_negpattern_list": [],
-                "case_insensitive": True,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": False,
-                "multiline": False,
-                "scantime": 86400,
-                "expiration": 691200
-                }
+            "logformat": self.logformat_syslog,
+            "pattern_list": ["error"],
+            "critical_pattern_list": [],
+            "negpattern_list": [],
+            "critical_negpattern_list": [],
+            "case_insensitive": True,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": False,
+            "multiline": False,
+            "scantime": 86400,
+            "expiration": 691200
+        }
         log = LogChecker(initial_data)
 
         f = open(self.logfile, 'a')
@@ -205,21 +204,21 @@ class TestSequenceFunctions(unittest.TestCase):
         """--criticalpattern option
         """
         initial_data = {
-                "logformat": self.logformat_syslog,
-                "pattern_list": [],
-                "critical_pattern_list": ["ERROR"],
-                "negpattern_list": [],
-                "critical_negpattern_list": [],
-                "case_insensitive": False,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": False,
-                "multiline": False,
-                "scantime": 86400,
-                "expiration": 691200
-                }
+            "logformat": self.logformat_syslog,
+            "pattern_list": [],
+            "critical_pattern_list": ["ERROR"],
+            "negpattern_list": [],
+            "critical_negpattern_list": [],
+            "case_insensitive": False,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": False,
+            "multiline": False,
+            "scantime": 86400,
+            "expiration": 691200
+        }
         log = LogChecker(initial_data)
 
         f = open(self.logfile, 'a')
@@ -238,21 +237,21 @@ class TestSequenceFunctions(unittest.TestCase):
         """--criticalpattern option
         """
         initial_data = {
-                "logformat": self.logformat_syslog,
-                "pattern_list": [],
-                "critical_pattern_list": ["ERROR"],
-                "negpattern_list": ["IGNORE"],
-                "critical_negpattern_list": [],
-                "case_insensitive": False,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": False,
-                "multiline": False,
-                "scantime": 86400,
-                "expiration": 691200
-                }
+            "logformat": self.logformat_syslog,
+            "pattern_list": [],
+            "critical_pattern_list": ["ERROR"],
+            "negpattern_list": ["IGNORE"],
+            "critical_negpattern_list": [],
+            "case_insensitive": False,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": False,
+            "multiline": False,
+            "scantime": 86400,
+            "expiration": 691200
+        }
         log = LogChecker(initial_data)
 
         f = open(self.logfile, 'a')
@@ -271,21 +270,21 @@ class TestSequenceFunctions(unittest.TestCase):
         """--criticalpattern and --case-insensitive options
         """
         initial_data = {
-                "logformat": self.logformat_syslog,
-                "pattern_list": [],
-                "critical_pattern_list": ["error"],
-                "negpattern_list": [],
-                "critical_negpattern_list": [],
-                "case_insensitive": True,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": False,
-                "multiline": False,
-                "scantime": 86400,
-                "expiration": 691200
-                }
+            "logformat": self.logformat_syslog,
+            "pattern_list": [],
+            "critical_pattern_list": ["error"],
+            "negpattern_list": [],
+            "critical_negpattern_list": [],
+            "case_insensitive": True,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": False,
+            "multiline": False,
+            "scantime": 86400,
+            "expiration": 691200
+        }
         log = LogChecker(initial_data)
 
         f = open(self.logfile, 'a')
@@ -304,21 +303,21 @@ class TestSequenceFunctions(unittest.TestCase):
         """--negpattern option
         """
         initial_data = {
-                "logformat": self.logformat_syslog,
-                "pattern_list": ["ERROR"],
-                "critical_pattern_list": [],
-                "negpattern_list": ["IGNORE"],
-                "critical_negpattern_list": [],
-                "case_insensitive": False,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": False,
-                "multiline": False,
-                "scantime": 86400,
-                "expiration": 691200
-                }
+            "logformat": self.logformat_syslog,
+            "pattern_list": ["ERROR"],
+            "critical_pattern_list": [],
+            "negpattern_list": ["IGNORE"],
+            "critical_negpattern_list": [],
+            "case_insensitive": False,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": False,
+            "multiline": False,
+            "scantime": 86400,
+            "expiration": 691200
+        }
         log = LogChecker(initial_data)
 
         f = open(self.logfile, 'a')
@@ -337,21 +336,21 @@ class TestSequenceFunctions(unittest.TestCase):
         """--critical-negpattern option
         """
         initial_data = {
-                "logformat": self.logformat_syslog,
-                "pattern_list": [],
-                "critical_pattern_list": ["FATAL"],
-                "negpattern_list": [],
-                "critical_negpattern_list": ["IGNORE"],
-                "case_insensitive": False,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": False,
-                "multiline": False,
-                "scantime": 86400,
-                "expiration": 691200
-                }
+            "logformat": self.logformat_syslog,
+            "pattern_list": [],
+            "critical_pattern_list": ["FATAL"],
+            "negpattern_list": [],
+            "critical_negpattern_list": ["IGNORE"],
+            "case_insensitive": False,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": False,
+            "multiline": False,
+            "scantime": 86400,
+            "expiration": 691200
+        }
         log = LogChecker(initial_data)
 
         f = open(self.logfile, 'a')
@@ -370,21 +369,21 @@ class TestSequenceFunctions(unittest.TestCase):
         """--criticalpattern option
         """
         initial_data = {
-                "logformat": self.logformat_syslog,
-                "pattern_list": [],
-                "critical_pattern_list": ["FATAL"],
-                "negpattern_list": [],
-                "critical_negpattern_list": ["IGNORE"],
-                "case_insensitive": False,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": False,
-                "multiline": False,
-                "scantime": 86400,
-                "expiration": 691200
-                }
+            "logformat": self.logformat_syslog,
+            "pattern_list": [],
+            "critical_pattern_list": ["FATAL"],
+            "negpattern_list": [],
+            "critical_negpattern_list": ["IGNORE"],
+            "case_insensitive": False,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": False,
+            "multiline": False,
+            "scantime": 86400,
+            "expiration": 691200
+        }
         log = LogChecker(initial_data)
 
         f = open(self.logfile, 'a')
@@ -403,21 +402,21 @@ class TestSequenceFunctions(unittest.TestCase):
         """--criticalpattern option
         """
         initial_data = {
-                "logformat": self.logformat_syslog,
-                "pattern_list": ["ERROR"],
-                "critical_pattern_list": ["FATAL"],
-                "negpattern_list": [],
-                "critical_negpattern_list": ["IGNORE"],
-                "case_insensitive": False,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": False,
-                "multiline": False,
-                "scantime": 86400,
-                "expiration": 691200
-                }
+            "logformat": self.logformat_syslog,
+            "pattern_list": ["ERROR"],
+            "critical_pattern_list": ["FATAL"],
+            "negpattern_list": [],
+            "critical_negpattern_list": ["IGNORE"],
+            "case_insensitive": False,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": False,
+            "multiline": False,
+            "scantime": 86400,
+            "expiration": 691200
+        }
         log = LogChecker(initial_data)
 
         f = open(self.logfile, 'a')
@@ -436,21 +435,21 @@ class TestSequenceFunctions(unittest.TestCase):
         """--negpattern and --case-insensitive options
         """
         initial_data = {
-                "logformat": self.logformat_syslog,
-                "pattern_list": ["ERROR"],
-                "critical_pattern_list": [],
-                "negpattern_list": ["ignore"],
-                "critical_negpattern_list": [],
-                "case_insensitive": True,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": False,
-                "multiline": False,
-                "scantime": 86400,
-                "expiration": 691200
-                }
+            "logformat": self.logformat_syslog,
+            "pattern_list": ["ERROR"],
+            "critical_pattern_list": [],
+            "negpattern_list": ["ignore"],
+            "critical_negpattern_list": [],
+            "case_insensitive": True,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": False,
+            "multiline": False,
+            "scantime": 86400,
+            "expiration": 691200
+        }
         log = LogChecker(initial_data)
 
         f = open(self.logfile, 'a')
@@ -469,21 +468,21 @@ class TestSequenceFunctions(unittest.TestCase):
         """--pattern options with multiples lines
         """
         initial_data = {
-                "logformat": self.logformat_syslog,
-                "pattern_list": ["ERROR1.*ERROR2"],
-                "critical_pattern_list": [],
-                "negpattern_list": [],
-                "critical_negpattern_list": [],
-                "case_insensitive": False,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": False,
-                "multiline": True,
-                "scantime": 86400,
-                "expiration": 691200
-                }
+            "logformat": self.logformat_syslog,
+            "pattern_list": ["ERROR1.*ERROR2"],
+            "critical_pattern_list": [],
+            "negpattern_list": [],
+            "critical_negpattern_list": [],
+            "case_insensitive": False,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": False,
+            "multiline": True,
+            "scantime": 86400,
+            "expiration": 691200
+        }
         log = LogChecker(initial_data)
 
         f = open(self.logfile, 'a')
@@ -503,21 +502,21 @@ class TestSequenceFunctions(unittest.TestCase):
         """--negpattern options with multiple lines
         """
         initial_data = {
-                "logformat": self.logformat_syslog,
-                "pattern_list": ["ERROR"],
-                "critical_pattern_list": [],
-                "negpattern_list": ["IGNORE"],
-                "critical_negpattern_list": [],
-                "case_insensitive": False,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": False,
-                "multiline": True,
-                "scantime": 86400,
-                "expiration": 691200
-                }
+            "logformat": self.logformat_syslog,
+            "pattern_list": ["ERROR"],
+            "critical_pattern_list": [],
+            "negpattern_list": ["IGNORE"],
+            "critical_negpattern_list": [],
+            "case_insensitive": False,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": False,
+            "multiline": True,
+            "scantime": 86400,
+            "expiration": 691200
+        }
         log = LogChecker(initial_data)
 
         f = open(self.logfile, 'a')
@@ -535,21 +534,21 @@ class TestSequenceFunctions(unittest.TestCase):
         """--logfile option with wild card '*'
         """
         initial_data = {
-                "logformat": self.logformat_syslog,
-                "pattern_list": ["ERROR"],
-                "critical_pattern_list": [],
-                "negpattern_list": [],
-                "critical_negpattern_list": [],
-                "case_insensitive": False,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": False,
-                "multiline": False,
-                "scantime": 86400,
-                "expiration": 691200
-                }
+            "logformat": self.logformat_syslog,
+            "pattern_list": ["ERROR"],
+            "critical_pattern_list": [],
+            "negpattern_list": [],
+            "critical_negpattern_list": [],
+            "case_insensitive": False,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": False,
+            "multiline": False,
+            "scantime": 86400,
+            "expiration": 691200
+        }
         log = LogChecker(initial_data)
 
         f = open(self.logfile1, 'a')
@@ -577,21 +576,21 @@ class TestSequenceFunctions(unittest.TestCase):
         """--logfile option with multiple filenames
         """
         initial_data = {
-                "logformat": self.logformat_syslog,
-                "pattern_list": ["ERROR"],
-                "critical_pattern_list": [],
-                "negpattern_list": [],
-                "critical_negpattern_list": [],
-                "case_insensitive": False,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": False,
-                "multiline": False,
-                "scantime": 86400,
-                "expiration": 691200
-                }
+            "logformat": self.logformat_syslog,
+            "pattern_list": ["ERROR"],
+            "critical_pattern_list": [],
+            "negpattern_list": [],
+            "critical_negpattern_list": [],
+            "case_insensitive": False,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": False,
+            "multiline": False,
+            "scantime": 86400,
+            "expiration": 691200
+        }
         log = LogChecker(initial_data)
 
         f = open(self.logfile1, 'a')
@@ -620,21 +619,21 @@ class TestSequenceFunctions(unittest.TestCase):
         """--scantime option without scantime.
         """
         initial_data = {
-                "logformat": self.logformat_syslog,
-                "pattern_list": ["ERROR"],
-                "critical_pattern_list": [],
-                "negpattern_list": [],
-                "critical_negpattern_list": [],
-                "case_insensitive": False,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": False,
-                "multiline": False,
-                "scantime": 2,
-                "expiration": 691200
-                }
+            "logformat": self.logformat_syslog,
+            "pattern_list": ["ERROR"],
+            "critical_pattern_list": [],
+            "negpattern_list": [],
+            "critical_negpattern_list": [],
+            "case_insensitive": False,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": False,
+            "multiline": False,
+            "scantime": 2,
+            "expiration": 691200
+        }
         log = LogChecker(initial_data)
 
         f = open(self.logfile1, 'a')
@@ -654,21 +653,21 @@ class TestSequenceFunctions(unittest.TestCase):
         """--scantime option within scantime.
         """
         initial_data = {
-                "logformat": self.logformat_syslog,
-                "pattern_list": ["ERROR"],
-                "critical_pattern_list": [],
-                "negpattern_list": [],
-                "critical_negpattern_list": [],
-                "case_insensitive": False,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": False,
-                "multiline": False,
-                "scantime": 2,
-                "expiration": 691200
-                }
+            "logformat": self.logformat_syslog,
+            "pattern_list": ["ERROR"],
+            "critical_pattern_list": [],
+            "negpattern_list": [],
+            "critical_negpattern_list": [],
+            "case_insensitive": False,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": False,
+            "multiline": False,
+            "scantime": 2,
+            "expiration": 691200
+        }
         log = LogChecker(initial_data)
 
         f = open(self.logfile1, 'a')
@@ -688,21 +687,21 @@ class TestSequenceFunctions(unittest.TestCase):
         """--scantime option with multiple logfiles.
         """
         initial_data = {
-                "logformat": self.logformat_syslog,
-                "pattern_list": ["ERROR"],
-                "critical_pattern_list": [],
-                "negpattern_list": [],
-                "critical_negpattern_list": [],
-                "case_insensitive": False,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": False,
-                "multiline": False,
-                "scantime": 2,
-                "expiration": 691200
-                }
+            "logformat": self.logformat_syslog,
+            "pattern_list": ["ERROR"],
+            "critical_pattern_list": [],
+            "negpattern_list": [],
+            "critical_negpattern_list": [],
+            "case_insensitive": False,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": False,
+            "multiline": False,
+            "scantime": 2,
+            "expiration": 691200
+        }
         log = LogChecker(initial_data)
 
         f = open(self.logfile1, 'a')
@@ -727,26 +726,25 @@ class TestSequenceFunctions(unittest.TestCase):
         self.assertEqual(log.get_state(), LogChecker.STATE_WARNING)
         self.assertEqual(log.get_message(), 'WARNING: Found 1 lines (limit=1/0): Dec  5 12:34:59 hostname test: ERROR at %s' % self.logfile2)
 
-
     def test_remove_seekfile_without_expiration(self):
         """--expiration and --remove-seekfile options
         """
         initial_data = {
-                "logformat": self.logformat_syslog,
-                "pattern_list": ["ERROR"],
-                "critical_pattern_list": [],
-                "negpattern_list": [],
-                "critical_negpattern_list": [],
-                "case_insensitive": False,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": False,
-                "multiline": False,
-                "scantime": 2,
-                "expiration": 3
-                }
+            "logformat": self.logformat_syslog,
+            "pattern_list": ["ERROR"],
+            "critical_pattern_list": [],
+            "negpattern_list": [],
+            "critical_negpattern_list": [],
+            "case_insensitive": False,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": False,
+            "multiline": False,
+            "scantime": 2,
+            "expiration": 3
+        }
         log = LogChecker(initial_data)
 
         f = open(self.logfile1, 'a')
@@ -779,21 +777,21 @@ class TestSequenceFunctions(unittest.TestCase):
         """--expiration and --remove-seekfile options
         """
         initial_data = {
-                "logformat": self.logformat_syslog,
-                "pattern_list": ["ERROR"],
-                "critical_pattern_list": [],
-                "negpattern_list": [],
-                "critical_negpattern_list": [],
-                "case_insensitive": False,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": False,
-                "multiline": False,
-                "scantime": 2,
-                "expiration": 10
-                }
+            "logformat": self.logformat_syslog,
+            "pattern_list": ["ERROR"],
+            "critical_pattern_list": [],
+            "negpattern_list": [],
+            "critical_negpattern_list": [],
+            "case_insensitive": False,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": False,
+            "multiline": False,
+            "scantime": 2,
+            "expiration": 10
+        }
         log = LogChecker(initial_data)
 
         f = open(self.logfile1, 'a')
@@ -826,21 +824,21 @@ class TestSequenceFunctions(unittest.TestCase):
         """--trace_inode
         """
         initial_data = {
-                "logformat": self.logformat_syslog,
-                "pattern_list": ["ERROR"],
-                "critical_pattern_list": [],
-                "negpattern_list": [],
-                "critical_negpattern_list": [],
-                "case_insensitive": False,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": True,
-                "multiline": False,
-                "scantime": 86400,
-                "expiration": 691200
-                }
+            "logformat": self.logformat_syslog,
+            "pattern_list": ["ERROR"],
+            "critical_pattern_list": [],
+            "negpattern_list": [],
+            "critical_negpattern_list": [],
+            "case_insensitive": False,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": True,
+            "multiline": False,
+            "scantime": 86400,
+            "expiration": 691200
+        }
         log = LogChecker(initial_data)
 
         # create logfile
@@ -888,21 +886,21 @@ class TestSequenceFunctions(unittest.TestCase):
         """--trace_inode, --expiration and --remove-seekfile options
         """
         initial_data = {
-                "logformat": self.logformat_syslog,
-                "pattern_list": ["ERROR"],
-                "critical_pattern_list": [],
-                "negpattern_list": [],
-                "critical_negpattern_list": [],
-                "case_insensitive": False,
-                "warning": 1,
-                "critical": 0,
-                "nodiff_warn": False,
-                "nodiff_crit": False,
-                "trace_inode": True,
-                "multiline": False,
-                "scantime": 2,
-                "expiration": 3
-                }
+            "logformat": self.logformat_syslog,
+            "pattern_list": ["ERROR"],
+            "critical_pattern_list": [],
+            "negpattern_list": [],
+            "critical_negpattern_list": [],
+            "case_insensitive": False,
+            "warning": 1,
+            "critical": 0,
+            "nodiff_warn": False,
+            "nodiff_crit": False,
+            "trace_inode": True,
+            "multiline": False,
+            "scantime": 2,
+            "expiration": 3
+        }
         log = LogChecker(initial_data)
 
         # create logfile
@@ -954,71 +952,70 @@ class TestSequenceFunctions(unittest.TestCase):
         self.assertTrue(os.path.exists(seekfile1_2))
 
 
-#class TestCommandLineParser(pikzie.TestCase):
+# class TestCommandLineParser(pikzie.TestCase):
 #
-#    def setup(self):
-#        curdir = os.getcwd()
-#        testdir = os.path.join(curdir, 'test')
-#        if not os.path.isdir(testdir):
-#            os.mkdir(testdir)
+#     def setup(self):
+#         curdir = os.getcwd()
+#         testdir = os.path.join(curdir, 'test')
+#         if not os.path.isdir(testdir):
+#             os.mkdir(testdir)
 #
-#        logdir = os.path.join(testdir, 'log')
-#        if not os.path.isdir(logdir):
-#            os.mkdir(logdir)
-#        self.logfile = os.path.join(logdir, 'testlog')
-#        self.logfile1 = os.path.join(logdir, 'testlog.1')
-#        self.logfile2 = os.path.join(logdir, 'testlog.2')
-#        self.logfile_pattern = os.path.join(logdir, 'testlog*')
+#         logdir = os.path.join(testdir, 'log')
+#         if not os.path.isdir(logdir):
+#             os.mkdir(logdir)
+#         self.logfile = os.path.join(logdir, 'testlog')
+#         self.logfile1 = os.path.join(logdir, 'testlog.1')
+#         self.logfile2 = os.path.join(logdir, 'testlog.2')
+#         self.logfile_pattern = os.path.join(logdir, 'testlog*')
 #
-#        seekdir = os.path.join(testdir, 'seek')
-#        if not os.path.isdir(seekdir):
-#            os.mkdir(seekdir)
-#        self.seekdir = seekdir
-#        self.seekfile = os.path.join(seekdir, 'testlog.seek')
-#        self.seekfile1 = LogChecker.get_seekfile(self.logfile_pattern, seekdir, self.logfile1)
-#        self.seekfile2 = LogChecker.get_seekfile(self.logfile_pattern, seekdir, self.logfile2)
+#         seekdir = os.path.join(testdir, 'seek')
+#         if not os.path.isdir(seekdir):
+#             os.mkdir(seekdir)
+#         self.seekdir = seekdir
+#         self.seekfile = os.path.join(seekdir, 'testlog.seek')
+#         self.seekfile1 = LogChecker.get_seekfile(self.logfile_pattern, seekdir, self.logfile1)
+#         self.seekfile2 = LogChecker.get_seekfile(self.logfile_pattern, seekdir, self.logfile2)
 #
-#        self.logformat_syslog = LogChecker.FORMAT_SYSLOG
+#         self.logformat_syslog = LogChecker.FORMAT_SYSLOG
 #
-#    def teardown(self):
-#        if os.path.exists(self.seekfile):
-#            os.unlink(self.seekfile)
-#        if os.path.exists(self.seekfile1):
-#            os.unlink(self.seekfile1)
-#        if os.path.exists(self.seekfile2):
-#            os.unlink(self.seekfile2)
+#     def teardown(self):
+#         if os.path.exists(self.seekfile):
+#             os.unlink(self.seekfile)
+#         if os.path.exists(self.seekfile1):
+#             os.unlink(self.seekfile1)
+#         if os.path.exists(self.seekfile2):
+#             os.unlink(self.seekfile2)
 #
-#        if os.path.exists(self.logfile):
-#            seekfile = LogChecker.get_seekfile(self.logfile_pattern, self.seekdir, self.logfile, trace_inode=True)
-#            if os.path.exists(seekfile):
-#                os.unlink(seekfile)
-#            os.unlink(self.logfile)
+#         if os.path.exists(self.logfile):
+#             seekfile = LogChecker.get_seekfile(self.logfile_pattern, self.seekdir, self.logfile, trace_inode=True)
+#             if os.path.exists(seekfile):
+#                 os.unlink(seekfile)
+#             os.unlink(self.logfile)
 #
-#        if os.path.exists(self.logfile1):
-#            seekfile1 = LogChecker.get_seekfile(self.logfile_pattern, self.seekdir, self.logfile1, trace_inode=True)
-#            if os.path.exists(seekfile1):
-#                os.unlink(seekfile1)
-#            os.unlink(self.logfile1)
+#         if os.path.exists(self.logfile1):
+#             seekfile1 = LogChecker.get_seekfile(self.logfile_pattern, self.seekdir, self.logfile1, trace_inode=True)
+#             if os.path.exists(seekfile1):
+#                 os.unlink(seekfile1)
+#             os.unlink(self.logfile1)
 #
-#        if os.path.exists(self.logfile2):
-#            seekfile2 = LogChecker.get_seekfile(self.logfile_pattern, self.seekdir, self.logfile2, trace_inode=True)
-#            if os.path.exists(seekfile2):
-#                os.unlink(seekfile2)
-#            os.unlink(self.logfile2)
+#         if os.path.exists(self.logfile2):
+#             seekfile2 = LogChecker.get_seekfile(self.logfile_pattern, self.seekdir, self.logfile2, trace_inode=True)
+#             if os.path.exists(seekfile2):
+#                 os.unlink(seekfile2)
+#             os.unlink(self.logfile2)
 
-#    @pikzie.data("from01", ["prog", "-l", "hogehoge", "-s", "hogehoge", "hogehoge", "-S", "0", "-j"])
-#    def test_error_true(self, argv):
-#        print self.logfile
-#        argv.append(self.logfile1)
-#        sys.argv = argv
-#        parser = LogChecker.make_parser()
-#        opts, args = LogChecker.check_parser_options(parser)
-#        self.assert_true(opts.error)
-#        self.assert_equal(args, argv[-1:])
+#     @pikzie.data("from01", ["prog", "-l", "hogehoge", "-s", "hogehoge", "hogehoge", "-S", "0", "-j"])
+#     def test_error_true(self, argv):
+#         print self.logfile
+#         argv.append(self.logfile1)
+#         sys.argv = argv
+#         parser = LogChecker.make_parser()
+#         opts, args = LogChecker.check_parser_options(parser)
+#         self.assert_true(opts.error)
+#         self.assert_equal(args, argv[-1:])
 
 
 if __name__ == "__main__":
     unittest.main()
 
 # vim: set ts=4 sw=4 et:
-

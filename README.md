@@ -12,14 +12,15 @@ Log file regular expression based parser plugin for Nagios.
 
 ## 修正履歴
 
-* 2014-06-18 1.0.7 fix bugs.
-* 2014-03-31 1.0.6 add --critical-negpattern options.
-* 2014-03-11 1.0.5 add ---multiline options.
-* 2014-03-05 1.0.4 add --trace-inode options.
-* 2013-12-27 1.0.3 change an OK message.
-* 2013-12-20 1.0.2 revise version processing and fix a help message.
-* 2013-12-20 1.0.1 fix check argc and parse logformat variable.
-* 2013-12-05 1.0.0 initial release.
+* 2015-01-14 1.0.8 Refactor for PEP8, pyflake8.
+* 2014-06-18 1.0.7 Fix bugs.
+* 2014-03-31 1.0.6 Add --critical-negpattern options.
+* 2014-03-11 1.0.5 Add ---multiline options.
+* 2014-03-05 1.0.4 Add --trace-inode options.
+* 2013-12-27 1.0.3 Change an OK message.
+* 2013-12-20 1.0.2 Revise version processing and fix a help message.
+* 2013-12-20 1.0.1 Fix check argc and parse logformat variable.
+* 2013-12-05 1.0.0 Initial release.
 
 
 
