@@ -259,7 +259,7 @@ class LogChecker:
         """Match the pattern each multiple lines in the log file.
         """
         line_buffer = []
-        key = None
+        pre_key = None
         cur_key = None
         message = None
         cur_message = None
@@ -272,29 +272,28 @@ class LogChecker:
             _debug("line='%s'" % line)
 
             m = self.re_logformat.match(line)
+            # set cur_key and cur_message.
             if m is not None:
                 cur_key = m.group(1)
                 cur_message = m.group(2)
             else:
-                cur_key = key
+                cur_key = pre_key
                 cur_message = line
 
-            if key is None:
-                key = cur_key
+            if pre_key is None:  # for first iteration
+                pre_key = cur_key
                 line_buffer.append(line)
-                continue
-            elif key == cur_key:
+            elif pre_key == cur_key:
                 line_buffer.append(cur_message)
-                continue
+            else:
+                message = ' '.join(line_buffer)
+                _debug("message='%s'" % message)
+                self._set_found(message, found, critical_found)
 
-            message = ' '.join(line_buffer)
-            _debug("message='%s'" % message)
-
-            self._set_found(message, found, critical_found)
-
-            key = cur_key
-            line_buffer = []
-            line_buffer.append(line)
+                # initialize variables for next loop
+                pre_key = cur_key
+                line_buffer = []
+                line_buffer.append(line)
         end_position = f.tell()
         f.close()
 
