@@ -20,8 +20,8 @@ def _debug(string):
 
 
 class LogChecker:
-    """LogChecker
-    """
+
+    """LogChecker."""
 
     # Class constant
     STATE_OK = 0
@@ -34,9 +34,10 @@ class LogChecker:
     SUFFIX_SEEK_WITH_INODE = ".inode.seek"
 
     def __init__(self, initial_data):
-        """ Constructor.
+        """Constructor.
+
+        Initialization of instance variable.
         """
-        # set default value
         self.logformat = LogChecker.FORMAT_SYSLOG
         self.pattern_list = []
         self.critical_pattern_list = []
@@ -66,7 +67,8 @@ class LogChecker:
 
     def _check_updated(self, logfile, offset, filesize):
         """Check whether the log file is updated.
-           If updated, return True.
+
+        If updated, return True.
         """
         if os.stat(logfile).st_mtime < time.time() - self.scantime:
             _debug("Skipped: mtime < curtime - scantime")
@@ -80,7 +82,8 @@ class LogChecker:
 
     def _check_negative_pattern(self, line):
         """Check whether the line matches negative pattern.
-           If matched, return True.
+
+        If matched, return True.
         """
         if len(self.negpattern_list) == 0:
             return False
@@ -95,7 +98,8 @@ class LogChecker:
 
     def _check_critical_negative_pattern(self, line):
         """Check whether the line matches critical negative pattern.
-           If matched, return True.
+
+        If matched, return True.
         """
         if len(self.critical_negpattern_list) == 0:
             return False
@@ -110,7 +114,8 @@ class LogChecker:
 
     def _find_pattern(self, line):
         """Find pattern.
-           If found, return True.
+
+        If found, return True.
         """
         if len(self.pattern_list) == 0:
             return False
@@ -125,7 +130,8 @@ class LogChecker:
 
     def _find_critical_pattern(self, line):
         """Find critical pattern.
-           If found, return True.
+
+        If found, return True.
         """
         if len(self.critical_pattern_list) == 0:
             return False
@@ -139,8 +145,7 @@ class LogChecker:
         return False
 
     def _remove_old_seekfile(self, seekfile_directory, logfile_pattern_list):
-        """Remove old seek files.
-        """
+        """Remove old seek files."""
         cwd = os.getcwd()
         try:
             os.chdir(seekfile_directory)
@@ -175,8 +180,7 @@ class LogChecker:
         return True
 
     def _remove_old_seekfile_with_inode(self, logfile_pattern, seekfile_directory):
-        """Remove old inode-based seek files.
-        """
+        """Remove old inode-based seek files."""
         prefix = None
         if self.trace_inode:
             prefix = LogChecker.get_digest(logfile_pattern)
@@ -211,8 +215,7 @@ class LogChecker:
         return True
 
     def _get_logfile_list(self, filename_pattern_list):
-        """Get the list of log files from pattern of filenames.
-        """
+        """Get the list of log files from pattern of filenames."""
         logfile_list = []
         for filename_pattern in filename_pattern_list.split():
             list = glob.glob(filename_pattern)
@@ -223,8 +226,7 @@ class LogChecker:
         return logfile_list
 
     def _update_state(self):
-        """Update the state of the result.
-        """
+        """Update the state of the result."""
         num_critical = len(self.critical_found)
         if 0 < num_critical:
             self.state = LogChecker.STATE_CRITICAL
@@ -245,8 +247,7 @@ class LogChecker:
         return
 
     def _set_found(self, message, found, critical_found):
-        """Set the found and critical_found if matching pattern is found.
-        """
+        """Set the found and critical_found if matching pattern is found."""
         if (not self._check_negative_pattern(message)) and (not self._check_critical_negative_pattern(message)):
             if self._find_pattern(message):
                 found.append(message)
@@ -256,8 +257,7 @@ class LogChecker:
         return
 
     def _pattern_matching_each_multiple_lines(self, logfile, start_position, found, critical_found):
-        """Match the pattern each multiple lines in the log file.
-        """
+        """Match the pattern each multiple lines in the log file."""
         line_buffer = []
         pre_key = None
         cur_key = None
@@ -305,8 +305,7 @@ class LogChecker:
         return end_position
 
     def _pattern_matching_each_single_line(self, logfile, start_position, found, critical_found):
-        """Match the pattern each a single line in the log file.
-        """
+        """Match the pattern each a single line in the log file."""
         f = open(logfile, 'r')
         f.seek(start_position, 0)
 
@@ -319,8 +318,7 @@ class LogChecker:
         return end_position
 
     def check_log(self, logfile, seekfile):
-        """Check the log file.
-        """
+        """Check the log file."""
         _debug("logfile='%s', seekfile='%s'" % (logfile, seekfile))
         if not os.path.exists(logfile):
             return False
@@ -354,8 +352,7 @@ class LogChecker:
         return
 
     def check_log_multi(self, logfile_pattern, seekfile_directory, remove_seekfile=False):
-        """Check the multiple log files.
-        """
+        """Check the multiple log files."""
         logfile_list = self._get_logfile_list(logfile_pattern)
         for logfile in logfile_list:
             if not os.path.isfile(logfile):
@@ -371,8 +368,7 @@ class LogChecker:
                 self._remove_old_seekfile(seekfile_directory, logfile_pattern)
 
     def clear_state(self):
-        """Clear the state of the result.
-        """
+        """Clear the state of the result."""
         self.state = None
         self.messages = []
         self.found = []
@@ -382,15 +378,13 @@ class LogChecker:
         return
 
     def get_state(self):
-        """Get the state of the result.
-        """
+        """Get the state of the result."""
         if self.state is None:
             self._update_state()
         return self.state
 
     def get_message(self):
-        """Get the message of the result.
-        """
+        """Get the message of the result."""
         if self.state is None:
             self._update_state()
         state_string = 'OK'
@@ -405,8 +399,7 @@ class LogChecker:
 
     @classmethod
     def get_pattern_list(cls, pattern_string, pattern_filename):
-        """Get the pattern list.
-        """
+        """Get the pattern list."""
         pattern_list = []
         if pattern_string:
             pattern_list.append(pattern_string)
@@ -441,8 +434,7 @@ class LogChecker:
 
     @classmethod
     def get_seekfile(cls, logfile_pattern, seekfile_directory, logfile, trace_inode=False):
-        """make filename of seekfile from logfile and get the filename.
-        """
+        """make filename of seekfile from logfile and get the filename."""
         prefix = None
         filename = None
         if trace_inode:
@@ -457,8 +449,7 @@ class LogChecker:
 
     @classmethod
     def update_seekfile(cls, seekfile, position):
-        """Update the seek file for the log file.
-        """
+        """Update the seek file for the log file."""
         tmp_seekfile = seekfile + "." + str(os.getpid)
         f = open(tmp_seekfile, 'w')
         f.write(str(position))
@@ -469,8 +460,7 @@ class LogChecker:
 
     @classmethod
     def read_seekfile(cls, seekfile):
-        """Read the offset of the log file from its seek file.
-        """
+        """Read the offset of the log file from its seek file."""
         if not os.path.exists(seekfile):
             return 0
         f = open(seekfile)
@@ -480,8 +470,7 @@ class LogChecker:
 
     @classmethod
     def get_digest(cls, string):
-        """Get digest string.
-        """
+        """Get digest string."""
         m = None
         try:
             # for Python 2.5-2.7
