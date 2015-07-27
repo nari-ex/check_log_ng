@@ -3,5 +3,6 @@ build:
   steps:
     - script:
         name: python unit test
+        cwd: .
         code: |
           python test_check_log_ng.py
