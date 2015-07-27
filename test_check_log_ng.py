@@ -13,6 +13,7 @@ class TestSequenceFunctions(unittest.TestCase):
 
     def setUp(self):
         curdir = os.getcwd()
+        print(curdir)
         testdir = os.path.join(curdir, 'test')
         self.testdir = testdir
         if not os.path.isdir(testdir):
@@ -68,6 +69,9 @@ class TestSequenceFunctions(unittest.TestCase):
             os.removedirs(self.seekdir)
         if os.path.exists(self.testdir):
             os.removedirs(self.testdir)
+
+        curdir = os.getcwd()
+        print(curdir)
 
     def test_format(self):
         """--format option
