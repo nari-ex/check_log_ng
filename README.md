@@ -1,5 +1,7 @@
 # check_log_ng 1.0.7
 
+[![wercker status](https://app.wercker.com/status/7c718bb6e4a7d61c3a4fd66c5b863585/s "wercker status")](https://app.wercker.com/project/bykey/7c718bb6e4a7d61c3a4fd66c5b863585)
+
 2013-12-27 TAKIZAWA Takashi
 
 2014-06-18 TAKAMURA Narimichi
