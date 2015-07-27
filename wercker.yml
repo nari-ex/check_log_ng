@@ -1,6 +1,7 @@
 box: python:2-slim
 build:
   steps:
-    name: python unit test
-    code: |
-      python test_check_log_ng.py
+    - script:
+        name: python unit test
+        code: |
+          python test_check_log_ng.py
