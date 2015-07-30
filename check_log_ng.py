@@ -492,6 +492,13 @@ class LogChecker:
             digest = base64.urlsafe_b64encode(string)
         return digest
 
+    def get_key(self, function, *args, **kw):
+            """Generate a random key."""
+            key = '%s.%s:' % (function.__module__, function.__name__)
+            hash_args = [str(arg) for arg in args]
+            hash_kw = ['%s:%s' % (k, hash(v)) for k, v in kw.items()]
+            return '%s::%s::%s' % (key, hash_args, hash_kw)
+
     @classmethod
     def make_parser(cls):
         usage = "Usage: %prog [option ...]"
