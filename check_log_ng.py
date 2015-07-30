@@ -7,10 +7,12 @@ import glob
 import time
 import re
 import base64
+import shelve
 from optparse import OptionParser
 
 # Globals
 CHECK_LOG_NG_VERSION = '1.0.8'
+CACHE_FILE = "/tmp/%s.cache" % os.path.basename(__file__).split('.')[0]
 debug = False
 
 
@@ -503,6 +505,39 @@ class LogChecker:
         """Check a cache expiration."""
         now = time.time()
         return (ttl != 0 and (cache_age + ttl) < now)
+
+    def memoize(self, get_key=get_key, ttl=0):
+        """Decorator to cache result of function."""
+        def _memoize(self, function):
+            def __memoize(*args, **kw):
+                key = get_key(function, *args, **kw)
+                cache_path = CACHE_FILE
+                value = None
+                try:
+                    if os.path.isfile(cache_path):
+                        storage = shelve.open(cache_path)
+                        cache_age = storage["age"]
+                        value = storage[key]
+                        expired = self.is_expired(cache_age, ttl)
+                        storage.close()
+                    else:
+                        expired = True
+                except KeyError:
+                    expired = True
+
+                if not expired:
+                    return value
+
+                tmp_cache_file = '.'.join([cache_path, str(os.getpid())])
+                storage = shelve.open(tmp_cache_file)
+                storage["age"] = time.time()
+                storage[key] = value = function(*args, **kw)
+                storage.close()
+                os.chmod(tmp_cache_file, 0666)
+                os.rename(tmp_cache_file, CACHE_FILE)
+                return value
+            return __memoize
+        return _memoize
 
     @classmethod
     def make_parser(cls):
