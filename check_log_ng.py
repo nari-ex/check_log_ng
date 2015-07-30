@@ -499,6 +499,11 @@ class LogChecker:
             hash_kw = ['%s:%s' % (k, hash(v)) for k, v in kw.items()]
             return '%s::%s::%s' % (key, hash_args, hash_kw)
 
+    def is_expired(self, cache_age, ttl):
+        """Check a cache expiration."""
+        now = time.time()
+        return (ttl != 0 and (cache_age + ttl) < now)
+
     @classmethod
     def make_parser(cls):
         usage = "Usage: %prog [option ...]"
